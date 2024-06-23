@@ -5,7 +5,7 @@ Description=Check for available Bootc Upgrade and update /etc/motd.d/upgrade-mes
 Type=simple
 ExecStart=/bin/bash -c '
 while true; do
-  output=$(bootc upgrade check);
+  output=$(bootc upgrade --check);
   if [[ $output == No\ changes\ in* ]]; then
     > /etc/motd.d/upgrade-message;
   else
