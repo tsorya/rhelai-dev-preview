@@ -1,0 +1,22 @@
+#!/bin/bash
+
+while true; do
+  # Run the command and capture its output
+  output=$(bootc upgrade --check)
+  message_file=/etc/motd.d/upgrade-message
+
+  # Check if the output starts with "No changes in" that means there are no updates available
+  if [[ $output == No\ changes\ in* ]]; then
+    # empty motd file
+    rm $message_file 2> /dev/null
+  elif [[ ! -f $message_file ]]; then
+    # If upgrade available, write the output to the file
+    echo "New version is available" > $message_file
+    # shellcheck disable=SC2129
+    echo "In order to upgrade to new version please run:" >> $message_file
+    echo "bootc upgrade --apply" >> $message_file
+    echo "Please note that the system will reboot after the upgrade" >> $message_file
+  fi
+  # Wait for 1 hour before the next iteration
+  sleep 1h
+done
