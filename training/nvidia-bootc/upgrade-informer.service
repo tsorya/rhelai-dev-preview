@@ -1,0 +1,9 @@
+[Unit]
+Description=Check for available Bootc Upgrade and update /etc/motd.d/upgrade-message
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/bootc-upgrade-check
+
+[Install]
+WantedBy=multi-user.target

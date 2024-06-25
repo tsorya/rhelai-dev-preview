@@ -100,8 +100,8 @@ COPY --from=builder --chmod=444 /home/builder/yum-packaging-precompiled-kmod/tmp
 RUN dnf install -y /rpms/kmod-nvidia-*.rpm
 
 COPY nvidia-toolkit-firstboot.service /usr/lib/systemd/system/nvidia-toolkit-firstboot.service
-# COPY upgrade-informer.service /usr/lib/systemd/system/upgrade-informer.service
-
+COPY bootc-upgrade-check.sh /usr/local/bin/bootc-upgrade-check
+COPY upgrade-informer.service /usr/lib/systemd/system/upgrade-informer.service
 
 RUN if [ "${TARGET_ARCH}" == "" ]; then \
         export TARGET_ARCH="$(arch)" ;\
@@ -135,6 +135,7 @@ RUN if [ "${TARGET_ARCH}" == "" ]; then \
     fi \
     && dnf clean all \
     && ln -s /usr/lib/systemd/system/nvidia-toolkit-firstboot.service /usr/lib/systemd/system/basic.target.wants/nvidia-toolkit-firstboot.service \
+    && ln -s /usr/lib/systemd/system/upgrade-informer.service /usr/lib/systemd/system/basic.target.wants/upgrade-informer.service \
     && echo "blacklist nouveau" > /etc/modprobe.d/blacklist_nouveau.conf
 
 
