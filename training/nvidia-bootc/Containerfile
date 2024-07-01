@@ -18,9 +18,6 @@ USER builder
 WORKDIR /home/builder
 COPY --chown=1001:0 x509-configuration.ini x509-configuration.ini
 
-# Include growfs service
-COPY build/usr /usr
-
 RUN if [ "${KERNEL_VERSION}" == "" ]; then \
         NEWER_KERNEL_CORE=$(dnf info kernel-core | awk -F: '/^Source/{gsub(/.src.rpm/, "", $2); print $2}' | sort -n | tail -n1) \
         && RELEASE=$(dnf info ${NEWER_KERNEL_CORE} | awk -F: '/^Release/{print $2}' | tr -d '[:blank:]') \
@@ -97,11 +94,12 @@ USER root
 COPY --from=builder /home/builder/yum-packaging-precompiled-kmod/RPMS/*/*.rpm /rpms/
 COPY --from=builder --chmod=444 /home/builder/yum-packaging-precompiled-kmod/tmp/firmware/*.bin /lib/firmware/nvidia/${DRIVER_VERSION}/
 
+COPY build/usr /usr
+
+
 RUN dnf install -y /rpms/kmod-nvidia-*.rpm
 
 COPY nvidia-toolkit-firstboot.service /usr/lib/systemd/system/nvidia-toolkit-firstboot.service
-COPY bootc-upgrade-check.sh /usr/local/bin/bootc-upgrade-check
-COPY upgrade-informer.service /usr/lib/systemd/system/upgrade-informer.service
 
 RUN if [ "${TARGET_ARCH}" == "" ]; then \
         export TARGET_ARCH="$(arch)" ;\
@@ -135,7 +133,6 @@ RUN if [ "${TARGET_ARCH}" == "" ]; then \
     fi \
     && dnf clean all \
     && ln -s /usr/lib/systemd/system/nvidia-toolkit-firstboot.service /usr/lib/systemd/system/basic.target.wants/nvidia-toolkit-firstboot.service \
-    && ln -s /usr/lib/systemd/system/upgrade-informer.service /usr/lib/systemd/system/basic.target.wants/upgrade-informer.service \
     && echo "blacklist nouveau" > /etc/modprobe.d/blacklist_nouveau.conf
 
 

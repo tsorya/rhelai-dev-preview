@@ -1,9 +1,7 @@
 [Unit]
-Description=Check for available Bootc Upgrade and update /etc/motd.d/upgrade-message
+Description=Check for available bootc updates
+ConditionPathExists=/run/ostree-booted
 
 [Service]
-Type=simple
-ExecStart=/usr/local/bin/bootc-upgrade-check
-
-[Install]
-WantedBy=multi-user.target
+Type=oneshot
+ExecStart=/usr/libexec/upgrade-informer
