@@ -135,6 +135,7 @@ RUN if [ "${TARGET_ARCH}" == "" ]; then \
     fi \
     && dnf clean all \
     && ln -s /usr/lib/systemd/system/nvidia-toolkit-firstboot.service /usr/lib/systemd/system/basic.target.wants/nvidia-toolkit-firstboot.service \
+    && ln -s /usr/lib/systemd/system/upgrade-informer.timer /etc/systemd/system/timers.target.wants/upgrade-informer.timer \
     && echo "blacklist nouveau" > /etc/modprobe.d/blacklist_nouveau.conf
 
 
