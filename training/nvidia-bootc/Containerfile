@@ -96,6 +96,8 @@ COPY --from=builder --chmod=444 /home/builder/yum-packaging-precompiled-kmod/tmp
 
 COPY build/usr /usr
 
+# Disable auto bootc auto upgrade
+RUN systemctl disable bootc-fetch-apply-updates.timer
 
 RUN dnf install -y /rpms/kmod-nvidia-*.rpm
 
