@@ -11,7 +11,7 @@ if [[ $output == No\ changes\ in* ]]; then
 elif [[ ! -f $message_file ]]; then
 
   bootc_image=$(bootc status --json | jq '.spec.image.image')
-  versions=$(skopeo inspect --format json docker://"$bootc_image" | jq '.Labels | {rhel_ai_version: .["rhel.ai.version"], rhel_version: .["redhat.version-id"]}')
+  versions=$(skopeo inspect --format json "docker://$bootc_image" | jq '.Labels | {rhel_ai_version: .["rhel.ai.version"], rhel_version: .["redhat.version-id"]}')
   rhel_ai_version=$(echo "$versions" | jq -r '.rhel_ai_version')
   rhel_version=$(echo "$versions" | jq -r '.rhel_version')
 

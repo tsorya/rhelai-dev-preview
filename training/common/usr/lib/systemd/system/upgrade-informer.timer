@@ -3,10 +3,9 @@ Description=Runs upgrade informer periodically
 ConditionPathExists=/run/ostree-booted
 
 [Timer]
-OnBootSec=1h
-# This time is relatively arbitrary and obviously expected to be overridden/changed
-OnUnitInactiveSec=8h
-# When deploying a large number of systems, it may be beneficial to increase this value to help with load on the registry.
+OnBootSec=1m
+
+OnUnitInactiveSec=4h
 RandomizedDelaySec=2h
 
 [Install]
