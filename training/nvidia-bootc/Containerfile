@@ -101,8 +101,6 @@ RUN dnf install -y /rpms/kmod-nvidia-*.rpm
 
 COPY nvidia-toolkit-firstboot.service /usr/lib/systemd/system/nvidia-toolkit-firstboot.service
 
-LABEL
-
 RUN if [ "${TARGET_ARCH}" == "" ]; then \
         export TARGET_ARCH="$(arch)" ;\
         fi \
@@ -139,8 +137,9 @@ RUN if [ "${TARGET_ARCH}" == "" ]; then \
     && rm -f /usr/lib/systemd/system/default.target.wants/bootc-fetch-apply-updates.timer \
     && echo "blacklist nouveau" > /etc/modprobe.d/blacklist_nouveau.conf
 
-# # Disable auto bootc auto upgrade
-# RUN systemctl disable bootc-fetch-apply-updates.timer --now
+
+RUN dnf install -y rhc rhc-worker-playbook -y && dnf clean all
+
 
 ARG SSHPUBKEY
 
