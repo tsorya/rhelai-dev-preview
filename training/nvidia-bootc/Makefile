@@ -3,7 +3,7 @@ IMAGE_NAME ?= $(VENDOR)-bootc
 DTK_IMAGE_NAME ?= $(VENDOR)-builder
 DTK_IMAGE_TAG ?= latest
 DRIVER_TOOLKIT_IMAGE = "${REGISTRY}/${REGISTRY_ORG}/${DTK_IMAGE_NAME}:${DTK_IMAGE_TAG}"
-
+VERSION := $(or ${VERSION},$(shell git rev-parse --short HEAD))
 CUDA_VERSION ?=
 OS_VERSION_MAJOR ?=
 ENABLE_RT ?=
@@ -37,6 +37,7 @@ bootc: dtk check-sshkey prepare-files growfs
 		$(FROM:%=--build-arg BASEIMAGE=%) \
 		$(EXTRA_RPM_PACKAGES:%=--build-arg EXTRA_RPM_PACKAGES=%) \
 		--build-arg DRIVER_TOOLKIT_IMAGE=${DRIVER_TOOLKIT_IMAGE} \
+		$(VERSION:%=--label rhel.ai.version=%) \
 		$(DRIVER_VERSION:%=--label driver-version=%) \
 		$(DRIVER_VERSION:%=--build-arg DRIVER_VERSION=%) \
 		$(CUDA_VERSION:%=--build-arg CUDA_VERSION=%) \

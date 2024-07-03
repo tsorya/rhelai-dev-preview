@@ -8,7 +8,7 @@ if [[ $output == Update\ available* ]] && [[ ! -f $message_file ]]; then
 
   if [[ ! -f $message_file ]]; then
     bootc_image=$(bootc status --json | jq '.spec.image.image' | tr -d '"')
-    rhel_ai_version=$(skopeo inspect --format json "docker://$bootc_image" | jq '.Labels | .["rhel.ai.version"]')
+    rhel_ai_version=$(skopeo inspect --format json "docker://$bootc_image" | jq '.Labels | .["rhel.ai.version"] // empty' | tr -d '"')
     # If upgrade available, write the output to the file
     echo -e "\n\n   **   Attention!   ** \n** A new $rhel_ai_version version is available **\n\
 ** In order to apply it run: bootc upgrade --apply \n\

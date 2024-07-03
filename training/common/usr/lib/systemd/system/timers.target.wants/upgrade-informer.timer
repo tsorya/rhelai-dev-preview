@@ -1,0 +1,12 @@
+[Unit]
+Description=Runs upgrade informer periodically
+ConditionPathExists=/run/ostree-booted
+
+[Timer]
+OnBootSec=1m
+
+OnUnitInactiveSec=4h
+RandomizedDelaySec=2h
+
+[Install]
+WantedBy=timers.target
