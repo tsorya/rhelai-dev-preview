@@ -38,7 +38,7 @@ bootc: dtk check-sshkey prepare-files growfs
 		$(EXTRA_RPM_PACKAGES:%=--build-arg EXTRA_RPM_PACKAGES=%) \
 		--build-arg DRIVER_TOOLKIT_IMAGE=${DRIVER_TOOLKIT_IMAGE} \
 		$(VERSION:%=--label rhel.ai.version=%) \
-		$(VERSION:%=----build-arg VERSION=%) \
+		$(VERSION:%=--build-arg VERSION=%) \
 		$(DRIVER_VERSION:%=--label driver-version=%) \
 		$(DRIVER_VERSION:%=--build-arg DRIVER_VERSION=%) \
 		$(CUDA_VERSION:%=--build-arg CUDA_VERSION=%) \
