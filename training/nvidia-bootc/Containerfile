@@ -96,6 +96,7 @@ COPY --from=builder /home/builder/yum-packaging-precompiled-kmod/RPMS/*/*.rpm /r
 COPY --from=builder --chmod=444 /home/builder/yum-packaging-precompiled-kmod/tmp/firmware/*.bin /lib/firmware/nvidia/${DRIVER_VERSION}/
 
 COPY build/usr /usr
+RUN echo ${VERSION} > /etc/rhel-ai-release
 
 RUN dnf install -y /rpms/kmod-nvidia-*.rpm
 

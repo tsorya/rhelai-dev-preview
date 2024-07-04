@@ -1,7 +1,11 @@
 [Unit]
 Description=Check for available bootc updates
 ConditionPathExists=/run/ostree-booted
+StartLimitIntervalSec=400
+StartLimitBurst=3
 
 [Service]
 Type=oneshot
 ExecStart=/usr/libexec/upgrade-informer
+Restart=on-failure
+RestartSec=90
